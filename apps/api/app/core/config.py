@@ -6,6 +6,7 @@ dikalibrasi, wajib ada di sini — tidak ada nilai hardcode di kode
 """
 
 from functools import lru_cache
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -45,7 +46,7 @@ class Settings(BaseSettings):
     refresh_token_ttl_days: int = 30
     participant_token_ttl_hours: int = 12
     cookie_secure: bool = False  # true di produksi
-    cookie_samesite: str = "lax"
+    cookie_samesite: Literal["lax", "strict", "none"] = "lax"
     byok_master_key: str = "dummy-32-byte-hex-ganti-ini"  # AES-256-GCM, rahasia kritis
 
     # --- Unggahan & batasan ---

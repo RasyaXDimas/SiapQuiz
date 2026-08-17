@@ -45,6 +45,7 @@ services:
     restart: unless-stopped
     volumes:
       - uploads:/data/uploads
+      - ./apps/api/tests:/app/tests
     env_file: .env
     depends_on:
       postgres:

@@ -1,9 +1,10 @@
 """Entry FastAPI SiapQuiz.
 
 Memasang:
-- middleware request_id (baca X-Request-ID atau buat UUID baru → contextvar →
-  response header) — AC-SETUP-06
-- exception handler global Problem Details (RFC 9457) — system-design.md §12
+- middleware request_id (X-Request-ID → contextvar → response header)
+- CORS (settings.cors_origin_list)
+- slowapi limiter (rate limit login) + handler Problem Details
+- exception handler global Problem Details (RFC 9457)
 - router /api/v1
 """
 
@@ -11,12 +12,16 @@ import uuid
 from collections.abc import Awaitable, Callable
 
 from fastapi import FastAPI, Request, Response
+from slowapi.errors import RateLimitExceeded
+from slowapi.extension import _rate_limit_exceeded_handler
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
-from app.api.v1 import health
+from app.api.v1 import auth, health
 from app.core.config import settings
 from app.core.errors import register_exception_handlers
 from app.core.logging import get_logger, request_id_var
+from app.core.ratelimit import limiter
 
 logger = get_logger(__name__)
 
@@ -45,8 +50,24 @@ def create_app() -> FastAPI:
     )
 
     app.add_middleware(RequestIDMiddleware)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origin_list,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # slowapi — state limiter wajib + handler agar 429 jadi Problem Details
+    app.state.limiter = limiter
+
+    @app.exception_handler(RateLimitExceeded)
+    async def ratelimit_handler(request: Request, exc: RateLimitExceeded) -> Response:
+        return _rate_limit_exceeded_handler(request, exc)
+
     register_exception_handlers(app)
     app.include_router(health.router, prefix="/api/v1")
+    app.include_router(auth.router, prefix="/api/v1")
 
     return app
 

@@ -60,6 +60,7 @@ project-docs/
 .opencode/
 .opencode*
 .swarm/
+.swarm_*
 .lcm/
 .omo/
 *.openai/
