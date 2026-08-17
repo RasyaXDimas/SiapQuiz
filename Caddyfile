@@ -1,0 +1,36 @@
+# Caddyfile — SiapQuiz
+# Dev lokal: layani HTTP saja di port 80 (infra-diagram.md: "Lokal (dev):
+# Caddy melayani HTTP di localhost"). Produksi memakai docker-compose.prod.yml
+# dengan site address https + auto-TLS (S7-08).
+#
+# /api/* → api:8000 (prefix /api dipertahankan, api-spec.yaml semua di /api/v1)
+# rute lain → web:3000. WebSocket /api/v1/ws/* diteruskan dengan upgrade.
+
+{
+	email {$ACME_EMAIL}
+}
+
+http://{$DOMAIN:localhost} {
+	# Header keamanan untuk semua respons
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+	}
+
+	# WebSocket sesi kuis — reverse_proxy Caddy menangani upgrade HTTP/1.1
+	# secara otomatis; blok eksplisit ini menjamin rute WS tidak tertangkap
+	# handler lain.
+	handle /api/v1/ws/* {
+		reverse_proxy api:8000
+	}
+
+	# API — pertahankan prefix /api (FastAPI memasang router di /api/v1)
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+
+	# Semua rute lain → Next.js
+	handle {
+		reverse_proxy web:3000
+	}
+}

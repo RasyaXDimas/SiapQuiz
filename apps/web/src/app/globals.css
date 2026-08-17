@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Token warna & tipografi — persis dari project-docs/02-ux/design-system.md.
+ * Light di :root, dark di blok @media (prefers-color-scheme: dark).
+ * Jangan mengubah nilai di sini tanpa mengubah design-system.md lebih dulu.
+ */
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #0891b2;
+
+  /* Warna opsi jawaban A–E — palet tetap (design-system.md) */
+  --option-a: #ef4444;
+  --option-b: #3b82f6;
+  --option-c: #f59e0b;
+  --option-d: #10b981;
+  --option-e: #8b5cf6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b0f19;
+    --foreground: #e2e8f0;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --border: #1e293b;
+    --primary: #6366f1;
+    --primary-foreground: #ffffff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #22d3ee;
+
+    --option-a: #ef4444;
+    --option-b: #3b82f6;
+    --option-c: #f59e0b;
+    --option-d: #10b981;
+    --option-e: #8b5cf6;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

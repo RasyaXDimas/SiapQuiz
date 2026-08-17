@@ -1,0 +1,68 @@
+# --- Environment ---
+.env
+.env.production
+.env.local
+.env.*.local
+
+# --- Uploads & data ---
+uploads/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Model files & caches ---
+*.pt
+*.bin
+*.safetensors
+model_cache/
+hf_cache/
+
+# --- Caddy data (local) ---
+caddy_data/
+caddy_config/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# --- Log & file sementara / backup ---
+*.log
+*.bak
+*.tmp
+*~
+*.swp
+
+# --- Data runtime lokal (di luar uploads/) ---
+data/
+tmp/
+temp/
+
+# --- Dokumentasi & artefak vibe-coding (tidak ikut push/commit) ---
+project-docs/
+.opencode/
+.opencode*
+.swarm/
+.lcm/
+.omo/
+*.openai/
+legacy/
+AGENTS.md
+CLAUDE.md

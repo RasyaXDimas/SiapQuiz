@@ -1,0 +1,1 @@
+"""Suite test SiapQuiz API."""

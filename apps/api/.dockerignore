@@ -1,0 +1,9 @@
+# Konteks build api — jangan kirim venv/cache ke daemon
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+.git
